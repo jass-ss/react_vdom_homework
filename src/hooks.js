@@ -3,7 +3,7 @@ export function createHooks(callback) {
   let count = 0;
 
   const memoState = [];
-  let ref;
+  const ref = [];
   let memoCount = 0;
 
   const useState = (initState) => {
@@ -34,20 +34,15 @@ export function createHooks(callback) {
 
   const useMemo = (fn, refs) => {
     const key = memoCount;
-    if (!ref) {
-      ref = JSON.stringify(refs);
-      //console.log('noref', refs, ref);
-      //console.log('???', fn(), refs);
-      memoState[key] = fn();
-      //console.log(key, memoState, memoState[key]);
-    } else {
-      if (ref !== JSON.stringify(refs)) {
-        console.log('ref', refs, ref);
-        memoState[key] = fn();
-        console.log('new', memoState);
-      }
+    if (!refs[key]) {
+      console.log('==', { key: key, refs: refs[key] });
+      memoState[key] = JSON.stringify(fn());
     }
-    console.log(ref, refs, key, memoState[key]);
+    if (ref[key] !== refs[key]) {
+      console.log('!', { key: key, refs: refs[key] });
+      ref[key] = refs[key];
+      memoState[key] = fn();
+    }
     return memoState[key];
   };
 
