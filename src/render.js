@@ -25,9 +25,7 @@ export function createElement(node) {
   for (const i in node.props) {
     newElement.setAttribute(i, node.props[i]);
   }
-
   //console.log(newElement);
-
   return newElement;
 }
 
